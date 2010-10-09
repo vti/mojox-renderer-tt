@@ -73,7 +73,10 @@ sub _render {
     my @params = ({%{$c->stash}, c => $c, h => $helper}, $output, {binmode => ':utf8'});
     $self->tt->{SERVICE}->{CONTEXT}->{LOAD_TEMPLATES}->[0]->ctx($c);
 
+    my $in_layout = $$output ? 0 : 1;
+    $$output = '';
     my $ok = $self->tt->process(defined $inline ? \$inline : $path, @params);
+    $c->stash->{content} = $$output if $in_layout;
 
     # Error
     unless ($ok) {

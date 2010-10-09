@@ -5,7 +5,7 @@ use warnings;
 
 use utf8;
 
-use Test::More tests => 25;
+use Test::More tests => 27;
 
 use Mojolicious::Lite;
 use Mojo::ByteStream 'b';
@@ -24,7 +24,7 @@ get '/with_include' => 'include';
 
 get '/with_wrapper' => 'wrapper';
 
-#get '/with_auto_wrapper' => sub { shift->render(auto_wrapper => layout => 'layout') };
+get '/with_auto_wrapper' => sub { shift->render(auto_wrapper => layout => 'layout') };
 
 get '/unicode' => 'unicode';
 
@@ -53,7 +53,7 @@ $t->get_ok('/with_include')->content_is("HelloInclude!Hallo");
 $t->get_ok('/with_wrapper')->content_is("wrapped");
 
 # With auto wrapper
-#$t->get_ok('/with_auto_wrapper')->content_is("wrapped");
+$t->get_ok('/with_auto_wrapper')->content_is("wrapped");
 
 # Unicode
 $t->get_ok('/unicode')->content_is(b("привет")->encode('UTF-8')->to_string);
